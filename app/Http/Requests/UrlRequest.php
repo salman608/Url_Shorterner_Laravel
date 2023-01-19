@@ -27,4 +27,12 @@ class UrlRequest extends FormRequest
             'original_url' => 'required | url',
         ];
     }
+
+    public function message()
+    {
+        return [
+            'original_url.required' => 'original url can not be null',
+            'original_url.url' => 'original url must be valid url'
+        ];
+    }
 }
