@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UrlRequest;
 use App\Models\Url;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class UrlController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UrlRequest $request)
     {
         // $url = new Url;
         // $url->original_url = $request->original_url;
@@ -52,9 +53,9 @@ class UrlController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Url $url)
     {
-        //
+        return $url;
     }
 
     /**
@@ -86,8 +87,9 @@ class UrlController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Url $url)
     {
-        //
+        $url->delete();
+        return response('deleted', 201);
     }
 }

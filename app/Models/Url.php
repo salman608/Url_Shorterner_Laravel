@@ -19,4 +19,9 @@ class Url extends Model
             $url->shorten_url = Str::random();
         });
     }
+
+    public function getRouteKeyName()
+    {
+        return 'shorten_url';
+    }
 }

@@ -21,4 +21,4 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::resource('urls', UrlController::class);
+Route::resource('url', UrlController::class);
