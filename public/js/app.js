@@ -5371,8 +5371,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      original_url: '',
+      errors: {}
+    };
+  },
   methods: {
-    submit: function submit() {}
+    submit: function submit() {
+      var _this = this;
+      axios.post("/api/url", {
+        original_url: this.original_url
+      }).then(function (res) {
+        console.log(res);
+      })["catch"](function (e) {
+        _this.errors = e.response.data.errors;
+      });
+    }
   }
 });
 
@@ -5511,7 +5526,9 @@ var render = function render() {
     on: {
       click: _vm.submit
     }
-  })])])]);
+  })]), _vm._v(" "), _vm.errors.original_url ? _c("span", {
+    staticClass: "text-xl text-red-500"
+  }, [_vm._v(_vm._s(_vm.errors.original_url[0]))]) : _vm._e()])]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
