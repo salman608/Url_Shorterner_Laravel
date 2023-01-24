@@ -23,7 +23,7 @@
 
 <body class="antialiased">
     <div id="app">
-        <example-component />
+        <main-component />
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>

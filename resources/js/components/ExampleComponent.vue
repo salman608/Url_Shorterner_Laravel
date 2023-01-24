@@ -1,5 +1,5 @@
 <template>
-    <div class="container bg-blue-600 text-3xl text-white">
+    <div class="bg-blue-600 text-3xl text-white text-center">
         I am tailwind css
     </div>
 </template>
