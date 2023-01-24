@@ -5371,7 +5371,9 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("app-header"), _vm._v(" "), _c("app-footer")], 1);
+  return _c("div", [_c("app-header"), _vm._v(" "), _c("div", {
+    staticClass: "min-h-screen"
+  }), _vm._v(" "), _c("app-footer")], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -5399,7 +5401,9 @@ var render = function render() {
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("h1", [_vm._v("i am footer")])]);
+  return _c("nav", {
+    staticClass: "bg-teal-600 p-4 text-white text-2xl text-center"
+  }, [_c("h1", [_vm._v("@copyRight By Salman")])]);
 }];
 render._withStripped = true;
 
@@ -5426,7 +5430,19 @@ var render = function render() {
 var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("h1", [_vm._v("I am header")])]);
+  return _c("nav", {
+    staticClass: "bg-teal-600 p-4 text-white text-2xl flex justify-between"
+  }, [_c("h1", [_vm._v("Home")]), _vm._v(" "), _c("div", [_c("a", {
+    staticClass: "px-3",
+    attrs: {
+      href: ""
+    }
+  }, [_vm._v("LogIn")]), _vm._v(" "), _c("a", {
+    staticClass: "px-3",
+    attrs: {
+      href: ""
+    }
+  }, [_vm._v("Register")])])]);
 }];
 render._withStripped = true;
 

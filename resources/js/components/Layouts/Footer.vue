@@ -1,7 +1,7 @@
 <template lang="">
-    <div>
-<h1>i am footer</h1>
-    </div>
+    <nav class="bg-teal-600 p-4 text-white text-2xl text-center">
+    <h1>@copyRight By Salman</h1>
+   </nav>
 </template>
 <script>
 export default {
