@@ -43,8 +43,8 @@ class UrlController extends Controller
         // $url->shorten_url = $request->shorten_url;
         // $url->save();
 
-        Url::create($request->all());
-        return response('created', 201);
+        $url = Url::create($request->all());
+        return response($url, 201);
     }
 
     /**

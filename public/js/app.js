@@ -5374,16 +5374,19 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       original_url: '',
-      errors: {}
+      errors: {},
+      items: []
     };
   },
   methods: {
     submit: function submit() {
       var _this = this;
+      if (this.original_url == "") return;
       axios.post("/api/url", {
         original_url: this.original_url
       }).then(function (res) {
-        console.log(res);
+        _this.original_url = "";
+        //    this.items
       })["catch"](function (e) {
         _this.errors = e.response.data.errors;
       });
@@ -5516,10 +5519,25 @@ var render = function render() {
       }
     }
   }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.original_url,
+      expression: "original_url"
+    }],
     staticClass: "p-2 mt-2 border border-orange-600 rounded-md shadow-md w-64",
     attrs: {
       type: "text",
       placeholder: "Past your url..."
+    },
+    domProps: {
+      value: _vm.original_url
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.original_url = $event.target.value;
+      }
     }
   }), _vm._v(" "), _c("i", {
     staticClass: "fas fa-paper-plane text-orange-600 cursor-pointer",

@@ -1,19 +1,17 @@
-<template lang="">
-<nav class="bg-teal-600 p-4  text-white text-2xl flex justify-between">
+<template>
+  <nav class="bg-teal-600 p-4 text-white text-2xl flex justify-between">
+    <h1>Home</h1>
     <h1>Home</h1>
     <div>
-        <a href="" class="px-3">LogIn</a>
-        <a href="" class="px-3">Register</a>
+      <a href="" class="px-3">LogIn</a>
+      <a href="" class="px-3">Register</a>
     </div>
-</nav>
+  </nav>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style lang="">
-
+<style>
 </style>
