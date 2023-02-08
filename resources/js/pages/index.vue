@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="text-center">
-      <h1 class="text-2xl text-bold text-orange-600">Shorten Your Bigs URLs</h1>
+      <h1 class="text-2xl text-bold text-orange-600">Shorten Your Big URL</h1>
       <hr />
       <form @submit.prevent="submit">
         <input
@@ -20,12 +20,33 @@
       <span class="text-xl text-red-500" v-if="errors.original_url">{{
         errors.original_url[0]
       }}</span>
-
-      <!-- <div v-for="item in items" :key="item.id">
-            <p> {{ item.original_url }},</p>
-            <p> {{ item.shorten_url }}</p>
-        </div> -->
     </div>
+    <section class="mt-5 pt-4 flex justify-center">
+      <div
+        class="border rounded-md p-4 flex justify-center mt-4"
+        style="margin: 100px auto !important; margin-top: 20px"
+      >
+        <table class="mt-5">
+          <thead>
+            <tr>
+              <th class="text-xl text-orange-600">Original Url</th>
+              <th class="text-xl text-orange-600">Shorten Url</th>
+              <th class="text-xl text-orange-600">Created At</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="item in items" :key="item.id">
+              <td class="rounded border p-2 text-sm">
+                {{ item.original_url }}
+              </td>
+              <td class="rounded border p-2 text-sm">{{ item.shorten_url }}</td>
+              <td class="rounded border p-2 text-sm">{{ item.created_at }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -38,6 +59,10 @@ export default {
       items: [],
     };
   },
+
+  mounted() {
+    this.fetchData();
+  },
   methods: {
     submit() {
       if (this.original_url == "") return;
@@ -47,11 +72,20 @@ export default {
         })
         .then((res) => {
           this.original_url = "";
-          //    this.items
+          this.items.push(res.data);
         })
         .catch((e) => {
           this.errors = e.response.data.errors;
         });
+    },
+
+    fetchData() {
+      axios
+        .get("/api/url")
+        .then((res) => {
+          this.items = res.data;
+        })
+        .catch((e) => {});
     },
   },
 };
