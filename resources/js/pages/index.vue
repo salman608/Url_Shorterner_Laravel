@@ -31,7 +31,8 @@
             <tr>
               <th class="text-xl text-orange-600">Original Url</th>
               <th class="text-xl text-orange-600">Shorten Url</th>
-              <th class="text-xl text-orange-600">Created At</th>
+              <th class="text-xl text-orange-600">Time</th>
+              <th class="text-xl text-orange-600">Action</th>
             </tr>
           </thead>
 
@@ -42,6 +43,18 @@
               </td>
               <td class="rounded border p-2 text-sm">{{ item.shorten_url }}</td>
               <td class="rounded border p-2 text-sm">{{ item.created_at }}</td>
+              <td class="rounded border p-2">
+                <i
+                  @click="destroy(item)"
+                  class="
+                    fas
+                    fa-times
+                    text-xl text-orange-500
+                    cursor-pointer
+                    hover:text-green-600
+                  "
+                ></i>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -87,6 +100,18 @@ export default {
           this.items = res.data;
         })
         .catch((e) => {});
+    },
+
+    destroy(item) {
+      if (confirm("Are You Sure?")) {
+        axios.delete(`api/url/${item.shorten_url}`).then((res) => {
+          this.items = this.items.filter((i) => i.id != item.id);
+          this.$notify({
+            message: "Deleted Url successfully!",
+            type: "warning",
+          });
+        });
+      }
     },
   },
 };

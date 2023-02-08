@@ -5402,6 +5402,20 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("/api/url").then(function (res) {
         _this2.items = res.data;
       })["catch"](function (e) {});
+    },
+    destroy: function destroy(item) {
+      var _this3 = this;
+      if (confirm("Are You Sure?")) {
+        axios["delete"]("api/url/".concat(item.shorten_url)).then(function (res) {
+          _this3.items = _this3.items.filter(function (i) {
+            return i.id != item.id;
+          });
+          _this3.$notify({
+            message: "Deleted Url successfully!",
+            type: "warning"
+          });
+        });
+      }
     }
   }
 });
@@ -5574,7 +5588,16 @@ var render = function render() {
       staticClass: "rounded border p-2 text-sm"
     }, [_vm._v(_vm._s(item.shorten_url))]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
-    }, [_vm._v(_vm._s(item.created_at))])]);
+    }, [_vm._v(_vm._s(item.created_at))]), _vm._v(" "), _c("td", {
+      staticClass: "rounded border p-2"
+    }, [_c("i", {
+      staticClass: "fas fa-times text-xl text-orange-500 cursor-pointer hover:text-green-600",
+      on: {
+        click: function click($event) {
+          return _vm.destroy(item);
+        }
+      }
+    })])]);
   }), 0)])])])]);
 };
 var staticRenderFns = [function () {
@@ -5586,7 +5609,9 @@ var staticRenderFns = [function () {
     staticClass: "text-xl text-orange-600"
   }, [_vm._v("Shorten Url")]), _vm._v(" "), _c("th", {
     staticClass: "text-xl text-orange-600"
-  }, [_vm._v("Created At")])])]);
+  }, [_vm._v("Time")]), _vm._v(" "), _c("th", {
+    staticClass: "text-xl text-orange-600"
+  }, [_vm._v("Action")])])]);
 }];
 render._withStripped = true;
 
