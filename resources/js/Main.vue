@@ -1,5 +1,6 @@
 <template lang="">
 <div>
+     <bridge-notify />
     <app-header />
     <div class="min-h-screen">
         <Index />
@@ -9,15 +10,14 @@
 </template>
 
 <script>
-import AppHeader from './components/Layouts/Header.vue';
-import AppFooter from './components/Layouts/Footer.vue';
-import Index from './pages/index.vue';
+import AppHeader from "./components/Layouts/Header.vue";
+import AppFooter from "./components/Layouts/Footer.vue";
+import Index from "./pages/index.vue";
 
 export default {
-    components: { AppFooter, AppHeader, Index }
-}
+  components: { AppFooter, AppHeader, Index },
+};
 </script>
 
 <style lang="">
-
 </style>

@@ -72,7 +72,8 @@ export default {
         })
         .then((res) => {
           this.original_url = "";
-          this.items.push(res.data);
+          this.items.unshift(res.data);
+          this.$notify({ message: "Url Created Successfully" });
         })
         .catch((e) => {
           this.errors = e.response.data.errors;
