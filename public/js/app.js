@@ -5586,7 +5586,14 @@ var render = function render() {
       staticClass: "rounded border p-2 text-sm"
     }, [_vm._v("\n              " + _vm._s(item.original_url) + "\n            ")]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
-    }, [_vm._v(_vm._s(item.shorten_url))]), _vm._v(" "), _c("td", {
+    }, [_c("a", {
+      attrs: {
+        href: item.shorten_url,
+        target: "_blank"
+      }
+    }, [_vm._v(_vm._s(item.shorten_url) + "\n                "), _c("i", {
+      staticClass: "fas fa-external-link-alt ml-2"
+    })])]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
     }, [_vm._v(_vm._s(item.created_at))]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2"

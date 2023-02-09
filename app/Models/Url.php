@@ -17,7 +17,7 @@ class Url extends Model
     {
         parent::boot();
         static::creating(function ($url) {
-            $url->shorten_url = Str::random();
+            $url->shorten_url = Str::random(6);
         });
     }
 

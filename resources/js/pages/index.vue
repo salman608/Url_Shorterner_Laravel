@@ -41,7 +41,12 @@
               <td class="rounded border p-2 text-sm">
                 {{ item.original_url }}
               </td>
-              <td class="rounded border p-2 text-sm">{{ item.shorten_url }}</td>
+              <td class="rounded border p-2 text-sm">
+                <a :href="item.shorten_url" target="_blank"
+                  >{{ item.shorten_url }}
+                  <i class="fas fa-external-link-alt ml-2"></i
+                ></a>
+              </td>
               <td class="rounded border p-2 text-sm">{{ item.created_at }}</td>
               <td class="rounded border p-2">
                 <i
