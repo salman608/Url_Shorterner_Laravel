@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "bridge-vue-notification": "^1.1.2"
+        "bridge-vue-notification": "^1.1.2",
+        "vue-router": "^3.6.5"
     }
 }

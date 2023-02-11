@@ -31,7 +31,9 @@
             <tr>
               <th class="text-xl text-orange-600">Original Url</th>
               <th class="text-xl text-orange-600">Shorten Url</th>
+
               <th class="text-xl text-orange-600">Time</th>
+              <th class="text-xl text-orange-600">Visits</th>
               <th class="text-xl text-orange-600">Action</th>
             </tr>
           </thead>
@@ -47,7 +49,11 @@
                   <i class="fas fa-external-link-alt ml-2"></i
                 ></a>
               </td>
+
               <td class="rounded border p-2 text-sm">{{ item.created_at }}</td>
+              <td class="rounded border p-2 text-sm">
+                {{ item.visits }}
+              </td>
               <td class="rounded border p-2">
                 <i
                   @click="destroy(item)"

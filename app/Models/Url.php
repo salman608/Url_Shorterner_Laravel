@@ -11,7 +11,7 @@ class Url extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['original_url', 'shorten_url'];
+    protected $fillable = ['original_url', 'shorten_url', 'visits'];
 
     protected static function boot()
     {
