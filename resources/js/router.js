@@ -3,19 +3,21 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
 
 import Index from './pages/index';
+import Login from "./pages/login";
+import Register from "./pages/register";
 
 const routes = [
     { path: '/', component: Index },
-    { path: '/bar', component: Bar },
-    { path: '/foo', component: Foo }
-  ]
+    { path: '/login', component: Login },
+    { path: '/register', component: Register },
+];
 
 const router = new VueRouter({
-    routes // short for `routes: routes`
+    routes,
+    hashbang: false,
+    mode: "history"
   })
 
 

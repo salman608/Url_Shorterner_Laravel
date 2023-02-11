@@ -1,10 +1,10 @@
 <template>
   <nav class="bg-teal-600 p-4 text-white text-2xl flex justify-between">
-    <h1>Home</h1>
-    <h1>Home</h1>
+    <router-link to="/">Home</router-link>
+
     <div>
-      <a href="" class="px-3">LogIn</a>
-      <a href="" class="px-3">Register</a>
+      <router-link to="/login">LogIn</router-link>
+      <router-link to="/register">Register</router-link>
     </div>
   </nav>
 </template>

@@ -17,4 +17,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('{url}', 'UrlController@show');
+Route::get('u/{url}', 'UrlController@show');
+Route::view('{url}', 'welcome');
