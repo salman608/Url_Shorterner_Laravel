@@ -4,9 +4,9 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 
-import Index from './pages/index';
-import Login from "./pages/login";
-import Register from "./pages/register";
+import Index from './pages/index.vue';
+import Login from "./pages/login.vue";
+import Register from "./pages/register.vue";
 
 const routes = [
     { path: '/', component: Index },
