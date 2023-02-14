@@ -54,7 +54,15 @@ export default {
     };
   },
   methods: {
-    submit() {},
+    submit() {
+      axios
+        .post("/login", this.form)
+        .then((res) => {
+          //   console.log(res.data);
+          this.$router.push("/");
+        })
+        .catch((e) => console.log(e.response));
+    },
   },
 };
 </script>

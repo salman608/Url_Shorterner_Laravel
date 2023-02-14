@@ -5354,7 +5354,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      loggedIn: window.loggedIn
+    };
+  },
+  methods: {
+    logout: function logout() {
+      var _this = this;
+      axios.post("/logout").then(function (res) {
+        return _this.$router.push("/login");
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -5442,7 +5456,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submit: function submit() {}
+    submit: function submit() {
+      var _this = this;
+      axios.post("/login", this.form).then(function (res) {
+        //   console.log(res.data);
+        _this.$router.push("/");
+      })["catch"](function (e) {
+        return console.log(e.response);
+      });
+    }
   }
 });
 
@@ -5471,7 +5493,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    submit: function submit() {}
+    submit: function submit() {
+      var _this = this;
+      axios.post("/register", this.form).then(function (res) {
+        //   console.log(res.data);
+        _this.$router.push("/");
+      })["catch"](function (e) {
+        return console.log(e.response);
+      });
+    }
   }
 });
 
@@ -5552,7 +5582,17 @@ var render = function render() {
     attrs: {
       to: "/"
     }
-  }, [_vm._v("Home")]), _vm._v(" "), _c("div", [_c("router-link", {
+  }, [_vm._v("Home")]), _vm._v(" "), _vm.loggedIn ? _c("div", [_c("a", {
+    attrs: {
+      href: ""
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.logout.apply(null, arguments);
+      }
+    }
+  }, [_vm._v("Logout")])]) : _c("div", [_c("router-link", {
     attrs: {
       to: "/login"
     }

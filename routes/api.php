@@ -1,6 +1,9 @@
 <?php
 
 // use App\Http\Controllers\UrlController;
+
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +24,4 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::resource('url', UrlController::class);
+Route::apiResource('url', UrlController::class);

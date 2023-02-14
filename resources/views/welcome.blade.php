@@ -22,9 +22,13 @@
             font-family: 'Nunito', sans-serif;
         }
     </style>
+    <script>
+        window.loggedIn = {{ auth()->check() }}
+    </script>
 </head>
 
 <body class="antialiased">
+
     <div id="app">
         <main-component />
     </div>
