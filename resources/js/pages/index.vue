@@ -76,6 +76,7 @@
 
 <script>
 export default {
+  middleware: "auth",
   data() {
     return {
       original_url: "",

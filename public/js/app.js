@@ -5384,6 +5384,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  middleware: "auth",
   data: function data() {
     return {
       original_url: "",
@@ -5447,6 +5448,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  middleware: "guest",
   data: function data() {
     return {
       form: {
@@ -5481,6 +5483,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  middleware: "guest",
   data: function data() {
     return {
       form: {
@@ -6063,6 +6066,20 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: routes,
   hashbang: false,
   mode: "history"
+});
+router.beforeEach(function (to, from, next) {
+  var middleware = to.matched[0].components["default"].middleware;
+  if (middleware == "guest") {
+    if (window.loggedIn) {
+      next("/");
+    }
+  }
+  if (middleware == "auth") {
+    if (!window.loggedIn) {
+      next("/login");
+    }
+  }
+  next();
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 

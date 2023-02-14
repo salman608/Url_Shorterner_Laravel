@@ -20,5 +20,20 @@ const router = new VueRouter({
     mode: "history"
   })
 
+router.beforeEach((to,from,next)=>{
+    let middleware=to.matched[0].components.default.middleware;
+    if(middleware=="guest"){
+        if(window.loggedIn){
+            next("/");
 
+        }
+        }
+        if(middleware=="auth"){
+            if(!window.loggedIn){
+                next("/login");
+
+            }
+        }
+         next();
+})
   export default router;
