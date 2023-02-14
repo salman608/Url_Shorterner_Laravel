@@ -5357,14 +5357,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      loggedIn: window.loggedIn
+      loggedIn: window.loggedIn,
+      user: window.user
     };
   },
   methods: {
     logout: function logout() {
-      var _this = this;
       axios.post("/logout").then(function (res) {
-        return _this.$router.push("/login");
+        return window.location = "/login";
       });
     }
   }
@@ -5457,10 +5457,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submit: function submit() {
-      var _this = this;
       axios.post("/login", this.form).then(function (res) {
         //   console.log(res.data);
-        _this.$router.push("/");
+        window.location = "/";
       })["catch"](function (e) {
         return console.log(e.response);
       });
@@ -5582,7 +5581,11 @@ var render = function render() {
     attrs: {
       to: "/"
     }
-  }, [_vm._v("Home")]), _vm._v(" "), _vm.loggedIn ? _c("div", [_c("a", {
+  }, [_vm._v("Home")]), _vm._v(" "), _vm.loggedIn ? _c("div", {
+    staticClass: "flex"
+  }, [_c("p", {
+    staticClass: "mx-3 text-orange-400"
+  }, [_vm._v("Hi, " + _vm._s(_vm.user.name))]), _vm._v(" "), _c("a", {
     attrs: {
       href: ""
     },

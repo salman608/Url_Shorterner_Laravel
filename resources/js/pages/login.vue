@@ -59,7 +59,7 @@ export default {
         .post("/login", this.form)
         .then((res) => {
           //   console.log(res.data);
-          this.$router.push("/");
+          window.location = "/";
         })
         .catch((e) => console.log(e.response));
     },
