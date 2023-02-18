@@ -25,13 +25,14 @@ router.beforeEach((to,from,next)=>{
     if(middleware=="guest"){
         if(window.loggedIn){
             next("/");
+            return;
 
         }
         }
         if(middleware=="auth"){
             if(!window.loggedIn){
                 next("/login");
-
+                return;
             }
         }
          next();

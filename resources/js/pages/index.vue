@@ -26,7 +26,7 @@
         class="border rounded-md p-4 flex justify-center mt-4"
         style="margin: 100px auto !important; margin-top: 20px"
       >
-        <table class="mt-5">
+        <table class="mt-5" v-if="items.length > 0">
           <thead>
             <tr>
               <th class="text-xl text-orange-600">Original Url</th>
@@ -69,6 +69,9 @@
             </tr>
           </tbody>
         </table>
+        <div v-else>
+          <h2>No Shorten Url Yet!</h2>
+        </div>
       </div>
     </section>
   </div>
@@ -92,8 +95,9 @@ export default {
     submit() {
       if (this.original_url == "") return;
       axios
-        .post("/api/url", {
-          original_url: this.original_url,
+        .post("/url", {
+          original_url: this.original_url
+
         })
         .then((res) => {
           this.original_url = "";
@@ -107,16 +111,18 @@ export default {
 
     fetchData() {
       axios
-        .get("/api/url")
+        .get("/url")
         .then((res) => {
           this.items = res.data;
         })
-        .catch((e) => {});
+        .catch((e) => {
+              this.errors = e.response.data.errors;
+            });
     },
 
     destroy(item) {
       if (confirm("Are You Sure?")) {
-        axios.delete(`api/url/${item.shorten_url}`).then((res) => {
+        axios.delete(`url/${item.shorten_url}`).then((res) => {
           this.items = this.items.filter((i) => i.id != item.id);
           this.$notify({
             message: "Deleted Url successfully!",

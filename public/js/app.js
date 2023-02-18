@@ -5399,7 +5399,7 @@ __webpack_require__.r(__webpack_exports__);
     submit: function submit() {
       var _this = this;
       if (this.original_url == "") return;
-      axios.post("/api/url", {
+      axios.post("/url", {
         original_url: this.original_url
       }).then(function (res) {
         _this.original_url = "";
@@ -5413,14 +5413,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     fetchData: function fetchData() {
       var _this2 = this;
-      axios.get("/api/url").then(function (res) {
+      axios.get("/url").then(function (res) {
         _this2.items = res.data;
-      })["catch"](function (e) {});
+      })["catch"](function (e) {
+        _this2.errors = e.response.data.errors;
+      });
     },
     destroy: function destroy(item) {
       var _this3 = this;
       if (confirm("Are You Sure?")) {
-        axios["delete"]("api/url/".concat(item.shorten_url)).then(function (res) {
+        axios["delete"]("url/".concat(item.shorten_url)).then(function (res) {
           _this3.items = _this3.items.filter(function (i) {
             return i.id != item.id;
           });
@@ -5676,7 +5678,7 @@ var render = function render() {
       margin: "100px auto !important",
       "margin-top": "20px"
     }
-  }, [_c("table", {
+  }, [_vm.items.length > 0 ? _c("table", {
     staticClass: "mt-5"
   }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.items, function (item) {
     return _c("tr", {
@@ -5706,7 +5708,7 @@ var render = function render() {
         }
       }
     })])]);
-  }), 0)])])])]);
+  }), 0)]) : _c("div", [_c("h2", [_vm._v("No Shorten Url Yet!")])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -6072,11 +6074,13 @@ router.beforeEach(function (to, from, next) {
   if (middleware == "guest") {
     if (window.loggedIn) {
       next("/");
+      return;
     }
   }
   if (middleware == "auth") {
     if (!window.loggedIn) {
       next("/login");
+      return;
     }
   }
   next();

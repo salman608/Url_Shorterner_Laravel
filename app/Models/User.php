@@ -23,6 +23,11 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function urls()
+    {
+        return $this->hasMany(Url::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -35,6 +40,7 @@ class User extends Authenticatable
         'created_at',
         'updated_at'
     ];
+
 
     /**
      * The attributes that should be cast.

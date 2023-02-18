@@ -17,7 +17,8 @@ class UrlController extends Controller
      */
     public function index()
     {
-        return Url::latest()->get();
+        // return Url::where('user_id', 1)->latest()->get();
+        return auth()->user()->urls;
     }
 
     /**
@@ -43,7 +44,7 @@ class UrlController extends Controller
         // $url->shorten_url = $request->shorten_url;
         // $url->save();
 
-        $url = Url::create($request->all());
+        $url = auth()->user()->urls()->create($request->all());
         return response($url, 201);
     }
 
