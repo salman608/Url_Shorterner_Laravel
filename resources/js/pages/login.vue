@@ -21,6 +21,9 @@
             class="border rounded-md p-2 shadow w-full"
           />
         </div>
+        <div class="float-right w-full">
+            <router-link to="/forgot-password" class="float-right" >Forgot Password</router-link >
+        </div>
 
         <div class="w-full py-2">
           <input

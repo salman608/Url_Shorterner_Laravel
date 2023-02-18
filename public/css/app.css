@@ -468,6 +468,9 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.float-right {
+  float: right;
+}
 .mx-3 {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
