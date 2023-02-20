@@ -8,9 +8,12 @@
           <input
             type="email"
             placeholder="Your Email....."
-
+            v-model="form.email"
             class="border rounded-md p-2 shadow w-full"
           />
+          <span class="text-xl text-red-500" v-if="errors.email">{{
+          errors.email[0]
+      }}</span>
         </div>
         <div class="w-full py-2">
           <input
@@ -33,15 +36,22 @@
     </div>
 </template>
 <script>
+
+
  export default{
     data(){
         return{
-           form:{email:''}
+            form:{
+            email:""
+        },
+           errors:{}
         }
     },
     methods:{
         submit(){
-
+          axios.post("/password/forgot",this.form).then(res=>{
+            this.$notify({message:res.data.message});
+          }).catch(e=>(this.errors=e.response.data.errors));
         }
     }
  };
