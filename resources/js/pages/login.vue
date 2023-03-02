@@ -11,6 +11,9 @@
             v-model="form.email"
             class="border rounded-md p-2 shadow w-full"
           />
+          <span class="text-xl text-red-500" v-if="errors.email">{{
+        errors.email[0]
+      }}</span>
         </div>
 
         <div class="w-full py-2">
@@ -20,6 +23,9 @@
             v-model="form.password"
             class="border rounded-md p-2 shadow w-full"
           />
+          <span class="text-xl text-red-500" v-if="errors.password">{{
+        errors.password[0]
+      }}</span>
         </div>
         <div class="float-right w-full">
             <router-link to="/forgot-password" class="float-right" >Forgot Password</router-link >
@@ -55,6 +61,7 @@ export default {
         email: "",
         password: "",
       },
+      errors:{ },
     };
   },
   methods: {
@@ -65,7 +72,9 @@ export default {
           //   console.log(res.data);
           window.location = "/";
         })
-        .catch((e) => console.log(e.response));
+        .catch((e) => {
+              this.errors = e.response.data.errors;
+            });
     },
   },
 };

@@ -35,24 +35,27 @@
       </div>
     </div>
 </template>
-<script>
 
+<script>
 
  export default{
     data(){
         return{
             form:{
-            email:""
+            email:'',
         },
            errors:{}
-        }
+        };
     },
     methods:{
         submit(){
-          axios.post("/password/forgot",this.form).then(res=>{
+          axios.post("/password/email",this.form).then(res=>{
             this.$notify({message:res.data.message});
           }).catch(e=>(this.errors=e.response.data.errors));
         }
     }
  };
 </script>
+<style>
+
+</style>

@@ -5387,7 +5387,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: {
-        email: ""
+        email: ''
       },
       errors: {}
     };
@@ -5395,7 +5395,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       var _this = this;
-      axios.post("/password/forgot", this.form).then(function (res) {
+      axios.post("/password/email", this.form).then(function (res) {
         _this.$notify({
           message: res.data.message
         });
@@ -5492,16 +5492,18 @@ __webpack_require__.r(__webpack_exports__);
       form: {
         email: "",
         password: ""
-      }
+      },
+      errors: {}
     };
   },
   methods: {
     submit: function submit() {
+      var _this = this;
       axios.post("/login", this.form).then(function (res) {
         //   console.log(res.data);
         window.location = "/";
       })["catch"](function (e) {
-        return console.log(e.response);
+        _this.errors = e.response.data.errors;
       });
     }
   }
@@ -5559,8 +5561,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  middleware: 'guest',
+  data: function data() {
+    return {
+      form: {
+        email: '',
+        token: '',
+        password: '',
+        password_confirmation: ''
+      }
+    };
+  },
   mounted: function mounted() {
+    this.form.email = this.$route.query.email;
+    this.form.token = this.$route.query.token;
     console.log(this.$route);
+  },
+  methods: {
+    submit: function submit() {
+      axios.post('/password/reset', this.form).then(function (res) {
+        window.location = "/";
+      });
+    }
   }
 });
 
@@ -5911,7 +5933,9 @@ var render = function render() {
         _vm.$set(_vm.form, "email", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _vm.errors.email ? _c("span", {
+    staticClass: "text-xl text-red-500"
+  }, [_vm._v(_vm._s(_vm.errors.email[0]))]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "w-full py-2"
   }, [_c("input", {
     directives: [{
@@ -5934,7 +5958,9 @@ var render = function render() {
         _vm.$set(_vm.form, "password", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _c("div", {
+  }), _vm._v(" "), _vm.errors.password ? _c("span", {
+    staticClass: "text-xl text-red-500"
+  }, [_vm._v(_vm._s(_vm.errors.password[0]))]) : _vm._e()]), _vm._v(" "), _c("div", {
     staticClass: "float-right w-full"
   }, [_c("router-link", {
     staticClass: "float-right",
@@ -6117,9 +6143,104 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_vm._v("reset password")]);
+  return _c("div", {
+    staticClass: "px-3 py-2 flex justify-center"
+  }, [_c("div", {
+    staticClass: "py-10 flex flex-wrap justify-center border rounded-md"
+  }, [_c("h1", {
+    staticClass: "text-3xl text-center w-full"
+  }, [_vm._v("Reset Password")]), _vm._v(" "), _c("form", {
+    staticClass: "flex flex-wrap justify-center p-2",
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submit.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "w-full py-2"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.email,
+      expression: "form.email"
+    }],
+    staticClass: "border rounded-md p-2 shadow w-full",
+    attrs: {
+      type: "email",
+      placeholder: "Your Email....."
+    },
+    domProps: {
+      value: _vm.form.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.form, "email", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "w-full py-2"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.password,
+      expression: "form.password"
+    }],
+    staticClass: "border rounded-md p-2 shadow w-full",
+    attrs: {
+      type: "password",
+      placeholder: "*****....."
+    },
+    domProps: {
+      value: _vm.form.password
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.form, "password", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "w-full py-2"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.password_confirmation,
+      expression: "form.password_confirmation"
+    }],
+    staticClass: "border rounded-md p-2 shadow w-full",
+    attrs: {
+      type: "password",
+      placeholder: "confirm password"
+    },
+    domProps: {
+      value: _vm.form.password_confirmation
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.form, "password_confirmation", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _vm._m(0)])])]);
 };
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "w-full py-2"
+  }, [_c("input", {
+    staticClass: "px-3 py-2 bg-blue-500 rounded shadow border text-white w-full",
+    attrs: {
+      type: "submit",
+      value: "Reset Now "
+    }
+  })]);
+}];
 render._withStripped = true;
 
 
@@ -6230,7 +6351,7 @@ var routes = [{
   path: "/forgot-password",
   component: _pages_forgot_password_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }, {
-  path: "/password/reset/:token",
+  path: "/password/email",
   component: _pages_reset_password_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
