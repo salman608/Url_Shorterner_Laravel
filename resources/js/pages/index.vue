@@ -41,11 +41,17 @@
           <tbody>
             <tr v-for="item in items" :key="item.id">
               <td class="rounded border p-2 text-sm">
-                {{ item.original_url }}
+
+                    {{ item.original_url }}
+
+
               </td>
               <td class="rounded border p-2 text-sm">
+                <span class="cursor-pointer" @click="copyToClipboard(item.path)">
+                {{ item.shorten_url }}
+               </span>
                 <a :href="item.path" target="_blank"
-                  >{{ item.shorten_url }}
+                  >
                   <i class="fas fa-external-link-alt ml-2"></i
                 ></a>
               </td>
@@ -131,6 +137,11 @@ export default {
         });
       }
     },
+
+    copyToClipboard(url){
+    //   console.log(url);
+      navigator.clipboard.writeText(url);
+    }
   },
 };
 </script>

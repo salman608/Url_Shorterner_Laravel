@@ -5468,6 +5468,10 @@ __webpack_require__.r(__webpack_exports__);
           });
         });
       }
+    },
+    copyToClipboard: function copyToClipboard(url) {
+      //   console.log(url);
+      navigator.clipboard.writeText(url);
     }
   }
 });
@@ -5836,14 +5840,21 @@ var render = function render() {
       key: item.id
     }, [_c("td", {
       staticClass: "rounded border p-2 text-sm"
-    }, [_vm._v("\n              " + _vm._s(item.original_url) + "\n            ")]), _vm._v(" "), _c("td", {
+    }, [_vm._v("\n\n                  " + _vm._s(item.original_url) + "\n\n\n            ")]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
-    }, [_c("a", {
+    }, [_c("span", {
+      staticClass: "cursor-pointer",
+      on: {
+        click: function click($event) {
+          return _vm.copyToClipboard(item.path);
+        }
+      }
+    }, [_vm._v("\n              " + _vm._s(item.shorten_url) + "\n             ")]), _vm._v(" "), _c("a", {
       attrs: {
         href: item.path,
         target: "_blank"
       }
-    }, [_vm._v(_vm._s(item.shorten_url) + "\n                "), _c("i", {
+    }, [_c("i", {
       staticClass: "fas fa-external-link-alt ml-2"
     })])]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
