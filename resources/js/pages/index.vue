@@ -4,12 +4,37 @@
       <h1 class="text-2xl text-bold text-orange-600">Shorten Your Big URL</h1>
       <hr />
       <form @submit.prevent="submit">
-        <input
+        <div class="my-1 flex-col">
+            <div>
+            <input
           type="text"
           class="p-2 mt-2 border border-orange-600 rounded-md shadow-md w-64"
-          v-model="original_url"
+          v-model="form.title"
+          placeholder="Title for your shorten url"
+        />
+            </div>
+
+        <span class="text-xl text-red-500" v-if="errors.title">{{
+        errors.title[0]
+      }}</span>
+        </div>
+        <div class="my-1 flex-col">
+            <div>
+                <input
+          type="text"
+          class="p-2 mt-2 border border-orange-600 rounded-md shadow-md w-64"
+          v-model="form.original_url"
           placeholder="Past your url..."
         />
+            </div>
+
+        <span class="text-xl text-red-500" v-if="errors.original_url">{{
+        errors.original_url[0]
+      }}</span>
+        </div>
+
+
+
 
         <i
           @click="submit"
@@ -17,9 +42,7 @@
         ></i>
       </form>
 
-      <span class="text-xl text-red-500" v-if="errors.original_url">{{
-        errors.original_url[0]
-      }}</span>
+
     </div>
     <section class="mt-5 pt-4 text-center flex justify-center ">
       <div
@@ -30,6 +53,7 @@
         <table class="mt-5" >
           <thead>
             <tr>
+              <th class="text-xl text-orange-600">Title</th>
               <th class="text-xl text-orange-600">Original Url</th>
               <th class="text-xl text-orange-600">Shorten Url</th>
 
@@ -41,6 +65,7 @@
 
           <tbody>
             <tr v-for="item in items.data" :key="item.id">
+                <td class="rounded border p-2 text-sm"> {{ item.title }}</td>
               <td class="rounded border p-2 text-sm">
 
                     {{ item.original_url }}
@@ -99,25 +124,27 @@ export default {
   middleware: "auth",
   data() {
     return {
-      original_url: "",
+        form:{
+            title:'',
+            original_url: "",
+        },
+
       errors: {},
       items: {data:[]}
     };
   },
 
   mounted() {
-    this.fetchData();
+    this.fetchData(this.$route.query.page);
   },
   methods: {
     submit() {
       if (this.original_url == "") return;
       axios
-        .post("/url", {
-          original_url: this.original_url
-
-        })
+        .post("/url", this.form)
         .then((res) => {
-          this.original_url = "";
+          this.form.title="";
+          this.form.original_url = "";
           this.items.unshift(res.data);
           this.$notify({ message: "Url Created Successfully" });
         })
@@ -127,6 +154,7 @@ export default {
     },
 
     fetchData(page=1) {
+
       axios
         .get(`/url?page=${page}`)
         .then((res) => {
@@ -157,12 +185,14 @@ export default {
         if(this.items.current_page==this.items.last_page) return;
         let nextPageNumber=this.items.current_page +1;
         this.fetchData(nextPageNumber);
+        this.$router.replace({query:{page:page}});
     },
     prev(){
         let prevPageNumber=this.items.current_page - 1;
         if(prevPageNumber== 0) return;
 
         this.fetchData(prevPageNumber);
+        this.$router.replace({query:{page:page}});
     },
   },
 };

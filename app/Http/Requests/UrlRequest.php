@@ -25,6 +25,7 @@ class UrlRequest extends FormRequest
     {
         return [
             'original_url' => 'required | url',
+            'title' => 'required',
         ];
     }
 

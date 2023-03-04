@@ -5423,7 +5423,10 @@ __webpack_require__.r(__webpack_exports__);
   middleware: "auth",
   data: function data() {
     return {
-      original_url: "",
+      form: {
+        title: '',
+        original_url: ""
+      },
       errors: {},
       items: {
         data: []
@@ -5431,16 +5434,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.fetchData();
+    this.fetchData(this.$route.query.page);
   },
   methods: {
     submit: function submit() {
       var _this = this;
       if (this.original_url == "") return;
-      axios.post("/url", {
-        original_url: this.original_url
-      }).then(function (res) {
-        _this.original_url = "";
+      axios.post("/url", this.form).then(function (res) {
+        _this.form.title = "";
+        _this.form.original_url = "";
         _this.items.unshift(res.data);
         _this.$notify({
           message: "Url Created Successfully"
@@ -5480,11 +5482,21 @@ __webpack_require__.r(__webpack_exports__);
       if (this.items.current_page == this.items.last_page) return;
       var nextPageNumber = this.items.current_page + 1;
       this.fetchData(nextPageNumber);
+      this.$router.replace({
+        query: {
+          page: page
+        }
+      });
     },
     prev: function prev() {
       var prevPageNumber = this.items.current_page - 1;
       if (prevPageNumber == 0) return;
       this.fetchData(prevPageNumber);
+      this.$router.replace({
+        query: {
+          page: page
+        }
+      });
     }
   }
 });
@@ -5810,12 +5822,39 @@ var render = function render() {
         return _vm.submit.apply(null, arguments);
       }
     }
-  }, [_c("input", {
+  }, [_c("div", {
+    staticClass: "my-1 flex-col"
+  }, [_c("div", [_c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.original_url,
-      expression: "original_url"
+      value: _vm.form.title,
+      expression: "form.title"
+    }],
+    staticClass: "p-2 mt-2 border border-orange-600 rounded-md shadow-md w-64",
+    attrs: {
+      type: "text",
+      placeholder: "Title for your shorten url"
+    },
+    domProps: {
+      value: _vm.form.title
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.form, "title", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _vm.errors.title ? _c("span", {
+    staticClass: "text-xl text-red-500"
+  }, [_vm._v(_vm._s(_vm.errors.title[0]))]) : _vm._e()]), _vm._v(" "), _c("div", {
+    staticClass: "my-1 flex-col"
+  }, [_c("div", [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.original_url,
+      expression: "form.original_url"
     }],
     staticClass: "p-2 mt-2 border border-orange-600 rounded-md shadow-md w-64",
     attrs: {
@@ -5823,22 +5862,22 @@ var render = function render() {
       placeholder: "Past your url..."
     },
     domProps: {
-      value: _vm.original_url
+      value: _vm.form.original_url
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.original_url = $event.target.value;
+        _vm.$set(_vm.form, "original_url", $event.target.value);
       }
     }
-  }), _vm._v(" "), _c("i", {
+  })]), _vm._v(" "), _vm.errors.original_url ? _c("span", {
+    staticClass: "text-xl text-red-500"
+  }, [_vm._v(_vm._s(_vm.errors.original_url[0]))]) : _vm._e()]), _vm._v(" "), _c("i", {
     staticClass: "fas fa-paper-plane text-orange-600 cursor-pointer",
     on: {
       click: _vm.submit
     }
-  })]), _vm._v(" "), _vm.errors.original_url ? _c("span", {
-    staticClass: "text-xl text-red-500"
-  }, [_vm._v(_vm._s(_vm.errors.original_url[0]))]) : _vm._e()]), _vm._v(" "), _c("section", {
+  })])]), _vm._v(" "), _c("section", {
     staticClass: "mt-5 pt-4 text-center flex justify-center"
   }, [_c("div", {
     staticClass: "border rounded-md p-4 flex justify-center mt-4",
@@ -5852,6 +5891,8 @@ var render = function render() {
     return _c("tr", {
       key: item.id
     }, [_c("td", {
+      staticClass: "rounded border p-2 text-sm"
+    }, [_vm._v(" " + _vm._s(item.title))]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
     }, [_vm._v("\n\n                  " + _vm._s(item.original_url) + "\n\n\n            ")]), _vm._v(" "), _c("td", {
       staticClass: "rounded border p-2 text-sm"
@@ -5915,6 +5956,8 @@ var staticRenderFns = [function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("thead", [_c("tr", [_c("th", {
+    staticClass: "text-xl text-orange-600"
+  }, [_vm._v("Title")]), _vm._v(" "), _c("th", {
     staticClass: "text-xl text-orange-600"
   }, [_vm._v("Original Url")]), _vm._v(" "), _c("th", {
     staticClass: "text-xl text-orange-600"

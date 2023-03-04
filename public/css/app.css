@@ -475,6 +475,10 @@ video {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
 }
+.my-1 {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -507,6 +511,9 @@ video {
 }
 .cursor-pointer {
   cursor: pointer;
+}
+.flex-col {
+  flex-direction: column;
 }
 .flex-wrap {
   flex-wrap: wrap;
