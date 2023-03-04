@@ -21,12 +21,13 @@
         errors.original_url[0]
       }}</span>
     </div>
-    <section class="mt-5 pt-4 flex justify-center">
+    <section class="mt-5 pt-4 text-center flex justify-center ">
       <div
         class="border rounded-md p-4 flex justify-center mt-4"
         style="margin: 100px auto !important; margin-top: 20px"
       >
-        <table class="mt-5" v-if="items.length > 0">
+      <div v-if="items.data.length > 0">
+        <table class="mt-5" >
           <thead>
             <tr>
               <th class="text-xl text-orange-600">Original Url</th>
@@ -39,7 +40,7 @@
           </thead>
 
           <tbody>
-            <tr v-for="item in items" :key="item.id">
+            <tr v-for="item in items.data" :key="item.id">
               <td class="rounded border p-2 text-sm">
 
                     {{ item.original_url }}
@@ -75,6 +76,16 @@
             </tr>
           </tbody>
         </table>
+        <div class="flex justify-between mt-5">
+            <a href="" class="border rounded shadow-xs w-10"
+            :class="items.current_page==1?'bg-gray-200 text-gray-600 shadow-none':''" @click.prevent="prev"> <<</a>
+            <a href="" class="border rounded shadow-xs w-10"
+            :class="items.current_page==items.last_page?'bg-gray-200 text-gray-600 shadow-none':''" @click.prevent="next"> >></a>
+          </div>
+      </div>
+
+
+
         <div v-else>
           <h2>No Shorten Url Yet!</h2>
         </div>
@@ -90,7 +101,7 @@ export default {
     return {
       original_url: "",
       errors: {},
-      items: [],
+      items: {data:[]}
     };
   },
 
@@ -115,9 +126,9 @@ export default {
         });
     },
 
-    fetchData() {
+    fetchData(page=1) {
       axios
-        .get("/url")
+        .get(`/url?page=${page}`)
         .then((res) => {
           this.items = res.data;
         })
@@ -141,7 +152,18 @@ export default {
     copyToClipboard(url){
     //   console.log(url);
       navigator.clipboard.writeText(url);
-    }
+    },
+    next(){
+        if(this.items.current_page==this.items.last_page) return;
+        let nextPageNumber=this.items.current_page +1;
+        this.fetchData(nextPageNumber);
+    },
+    prev(){
+        let prevPageNumber=this.items.current_page - 1;
+        if(prevPageNumber== 0) return;
+
+        this.fetchData(prevPageNumber);
+    },
   },
 };
 </script>

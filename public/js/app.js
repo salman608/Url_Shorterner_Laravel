@@ -5425,7 +5425,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       original_url: "",
       errors: {},
-      items: []
+      items: {
+        data: []
+      }
     };
   },
   mounted: function mounted() {
@@ -5449,7 +5451,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     fetchData: function fetchData() {
       var _this2 = this;
-      axios.get("/url").then(function (res) {
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/url?page=".concat(page)).then(function (res) {
         _this2.items = res.data;
       })["catch"](function (e) {
         _this2.errors = e.response.data.errors;
@@ -5472,6 +5475,16 @@ __webpack_require__.r(__webpack_exports__);
     copyToClipboard: function copyToClipboard(url) {
       //   console.log(url);
       navigator.clipboard.writeText(url);
+    },
+    next: function next() {
+      if (this.items.current_page == this.items.last_page) return;
+      var nextPageNumber = this.items.current_page + 1;
+      this.fetchData(nextPageNumber);
+    },
+    prev: function prev() {
+      var prevPageNumber = this.items.current_page - 1;
+      if (prevPageNumber == 0) return;
+      this.fetchData(prevPageNumber);
     }
   }
 });
@@ -5826,16 +5839,16 @@ var render = function render() {
   })]), _vm._v(" "), _vm.errors.original_url ? _c("span", {
     staticClass: "text-xl text-red-500"
   }, [_vm._v(_vm._s(_vm.errors.original_url[0]))]) : _vm._e()]), _vm._v(" "), _c("section", {
-    staticClass: "mt-5 pt-4 flex justify-center"
+    staticClass: "mt-5 pt-4 text-center flex justify-center"
   }, [_c("div", {
     staticClass: "border rounded-md p-4 flex justify-center mt-4",
     staticStyle: {
       margin: "100px auto !important",
       "margin-top": "20px"
     }
-  }, [_vm.items.length > 0 ? _c("table", {
+  }, [_vm.items.data.length > 0 ? _c("div", [_c("table", {
     staticClass: "mt-5"
-  }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.items, function (item) {
+  }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.items.data, function (item) {
     return _c("tr", {
       key: item.id
     }, [_c("td", {
@@ -5870,7 +5883,33 @@ var render = function render() {
         }
       }
     })])]);
-  }), 0)]) : _c("div", [_c("h2", [_vm._v("No Shorten Url Yet!")])])])])]);
+  }), 0)]), _vm._v(" "), _c("div", {
+    staticClass: "flex justify-between mt-5"
+  }, [_c("a", {
+    staticClass: "border rounded shadow-xs w-10",
+    "class": _vm.items.current_page == 1 ? "bg-gray-200 text-gray-600 shadow-none" : "",
+    attrs: {
+      href: ""
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.prev.apply(null, arguments);
+      }
+    }
+  }, [_vm._v(" <<")]), _vm._v(" "), _c("a", {
+    staticClass: "border rounded shadow-xs w-10",
+    "class": _vm.items.current_page == _vm.items.last_page ? "bg-gray-200 text-gray-600 shadow-none" : "",
+    attrs: {
+      href: ""
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.next.apply(null, arguments);
+      }
+    }
+  }, [_vm._v(" >>")])])]) : _c("div", [_c("h2", [_vm._v("No Shorten Url Yet!")])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
