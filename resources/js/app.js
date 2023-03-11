@@ -13,7 +13,10 @@ Vue.component('main-component', require('./Main.vue').default);
 Vue.use(require("bridge-vue-notification"));
 
 
+import Vue from 'vue';
 import router from './router';
+
+window.Event=new Vue();
 
 const app = new Vue({
     router,

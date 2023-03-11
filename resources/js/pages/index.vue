@@ -9,7 +9,11 @@
       </button>
     </div>
     <div class="w-full flex">
-      <left-Bar @urlSelected="showDetails" :data="items.data" />
+      <left-Bar
+        @urlSelected="showDetails"
+        :allItems="items"
+        :data="items.data"
+      />
       <right-Bar @deleteItem="destroy" :data="selectedItem" />
     </div>
     <transition name="fade">
@@ -52,6 +56,8 @@ export default {
 
   mounted() {
     this.fetchData(this.$route.query.page);
+    Event.$on("prevPage", this.prev);
+    Event.$on("nextPage", this.next);
   },
   methods: {
     submit() {
@@ -99,6 +105,27 @@ export default {
     },
     openModal() {
       this.modalOpen = true;
+    },
+    next() {
+      if (this.items.current_page == this.items.last_page) return;
+      let nextPageNumber = this.items.current_page + 1;
+      this.fetchData(nextPageNumber);
+      this.$router.replace({
+        query: {
+          page: nextPageNumber,
+        },
+      });
+    },
+    prev() {
+      let prevPageNumber = this.items.current_page - 1;
+      if (prevPageNumber == 0) return;
+
+      this.fetchData(prevPageNumber);
+      this.$router.replace({
+        query: {
+          page: prevPageNumber,
+        },
+      });
     },
   },
 };
