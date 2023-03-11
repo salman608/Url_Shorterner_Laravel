@@ -5384,11 +5384,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['show'],
+  props: ["show", "items"],
   data: function data() {
     return {
       form: {
-        title: '',
+        title: "",
         original_url: ""
       },
       errors: {}
@@ -5396,14 +5396,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     close: function close() {
-      this.$emit('closeModal');
+      this.errors = {};
+      this.$emit("closeModal");
     },
     submit: function submit() {
       var _this = this;
-      if (this.original_url == "") return;
+      // if (this.form.original_url == "") return;
       axios.post("/url", this.form).then(function (res) {
         _this.form.title = "";
         _this.form.original_url = "";
+        _this.close();
         _this.items.unshift(res.data);
         _this.$notify({
           message: "Url Created Successfully"
@@ -5451,11 +5453,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['data'],
+  props: ["data"],
   methods: {
     copyToClipboard: function copyToClipboard(url) {
       //   console.log(url);
       navigator.clipboard.writeText(url);
+    },
+    destroy: function destroy() {
+      this.$emit("deleteItem", this.data);
     }
   }
 });
@@ -5526,7 +5531,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       modalOpen: false,
       form: {
-        title: '',
+        title: "",
         original_url: ""
       },
       errors: {},
@@ -5540,23 +5545,37 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchData(this.$route.query.page);
   },
   methods: {
-    fetchData: function fetchData() {
+    submit: function submit() {
       var _this = this;
-      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
-      axios.get("/url?page=".concat(page)).then(function (res) {
-        _this.items = res.data;
+      if (this.form.original_url == "") return;
+      axios.post("/url", this.form).then(function (res) {
+        _this.form.title = "";
+        _this.form.original_url = "";
+        _this.items.unshift(res.data);
+        _this.$notify({
+          message: "Url Created Successfully"
+        });
       })["catch"](function (e) {
         _this.errors = e.response.data.errors;
       });
     },
-    destroy: function destroy(item) {
+    fetchData: function fetchData() {
       var _this2 = this;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/url?page=".concat(page)).then(function (res) {
+        _this2.items = res.data;
+      })["catch"](function (e) {
+        _this2.errors = e.response.data.errors;
+      });
+    },
+    destroy: function destroy(item) {
+      var _this3 = this;
       if (confirm("Are You Sure?")) {
         axios["delete"]("url/".concat(item.shorten_url)).then(function (res) {
-          _this2.items = _this2.items.filter(function (i) {
+          _this3.items.data = _this3.items.data.filter(function (i) {
             return i.id != item.id;
           });
-          _this2.$notify({
+          _this3.$notify({
             message: "Deleted Url successfully!",
             type: "warning"
           });
@@ -5824,7 +5843,7 @@ var render = function render() {
     }
   }, [_c("h1", {
     staticClass: "text-center font-bold text-orange-600"
-  }, [_vm._v("Shorten Your Url")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n          Shorten Your Url\n        ")]), _vm._v(" "), _c("div", {
     staticClass: "my-1 flex-col"
   }, [_c("div", [_c("input", {
     directives: [{
@@ -5966,7 +5985,14 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("section", {
     staticClass: "m-1 p-2 w-9/12 border rounded"
-  }, [_vm.data ? _c("div", [_c("h1", [_vm._v(_vm._s(_vm.data.title))]), _vm._v(" "), _c("p", {
+  }, [_vm.data ? _c("div", [_c("div", {
+    staticClass: "flex justify-between"
+  }, [_c("h1", [_vm._v(_vm._s(_vm.data.title))]), _vm._v(" "), _c("i", {
+    staticClass: "fas fa-times text-red-400 hover:text-red-700 cursor-pointer",
+    on: {
+      click: _vm.destroy
+    }
+  })]), _vm._v(" "), _c("p", {
     staticClass: "text-xs text-gray-500"
   }, [_vm._v(_vm._s(_vm.data.original_url))]), _vm._v(" "), _c("div", {
     staticClass: "flex my-1"
@@ -6091,7 +6117,7 @@ var render = function render() {
     on: {
       click: _vm.openModal
     }
-  }, [_vm._v("New")])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n      New\n    ")])]), _vm._v(" "), _c("div", {
     staticClass: "w-full flex"
   }, [_c("left-Bar", {
     attrs: {
@@ -6103,6 +6129,9 @@ var render = function render() {
   }), _vm._v(" "), _c("right-Bar", {
     attrs: {
       data: _vm.selectedItem
+    },
+    on: {
+      deleteItem: _vm.destroy
     }
   })], 1), _vm._v(" "), _c("transition", {
     attrs: {
@@ -6110,7 +6139,8 @@ var render = function render() {
     }
   }, [_c("create-Modal", {
     attrs: {
-      show: _vm.modalOpen
+      show: _vm.modalOpen,
+      items: _vm.items.data
     },
     on: {
       closeModal: function closeModal($event) {

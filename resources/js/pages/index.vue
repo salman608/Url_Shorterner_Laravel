@@ -1,84 +1,106 @@
 <template>
-<div class="flex flex-wrap">
-
+  <div class="flex flex-wrap">
     <div class="w-full p-4">
-        <button class="float-right px-1 py-2 bg-yellow-700 rounded shadow text-white w-32" @click="openModal">New</button>
+      <button
+        class="float-right px-1 py-2 bg-yellow-700 rounded shadow text-white w-32"
+        @click="openModal"
+      >
+        New
+      </button>
     </div>
     <div class="w-full flex">
-
-        <left-Bar @urlSelected="showDetails" :data="items.data" />
-        <right-Bar :data="selectedItem" />
+      <left-Bar @urlSelected="showDetails" :data="items.data" />
+      <right-Bar @deleteItem="destroy" :data="selectedItem" />
     </div>
     <transition name="fade">
-        <create-Modal :show="modalOpen" @closeModal="modalOpen=false" />
+      <create-Modal
+        :show="modalOpen"
+        @closeModal="modalOpen = false"
+        :items="items.data"
+      />
     </transition>
-</div>
+  </div>
 </template>
 
 <script>
-import LeftBar from '../components/index/leftBar.vue';
-import RightBar from '../components/index/rightBar.vue';
-import CreateModal from '../components/index/createModal.vue';
+import LeftBar from "../components/index/leftBar.vue";
+import RightBar from "../components/index/rightBar.vue";
+import CreateModal from "../components/index/createModal.vue";
 
 export default {
-    middleware: "auth",
-    components: {
-        LeftBar,
-        RightBar,
-        CreateModal
+  middleware: "auth",
+  components: {
+    LeftBar,
+    RightBar,
+    CreateModal,
+  },
+  data() {
+    return {
+      modalOpen: false,
+      form: {
+        title: "",
+        original_url: "",
+      },
+
+      errors: {},
+      selectedItem: null,
+      items: {
+        data: [],
+      },
+    };
+  },
+
+  mounted() {
+    this.fetchData(this.$route.query.page);
+  },
+  methods: {
+    submit() {
+      if (this.form.original_url == "") return;
+      axios
+        .post("/url", this.form)
+        .then((res) => {
+          this.form.title = "";
+          this.form.original_url = "";
+
+          this.items.unshift(res.data);
+          this.$notify({
+            message: "Url Created Successfully",
+          });
+        })
+        .catch((e) => {
+          this.errors = e.response.data.errors;
+        });
     },
-    data() {
-        return {
-            modalOpen: false,
-            form: {
-                title: '',
-                original_url: "",
-            },
-
-            errors: {},
-            selectedItem: null,
-            items: {
-                data: []
-            }
-        };
+    fetchData(page = 1) {
+      axios
+        .get(`/url?page=${page}`)
+        .then((res) => {
+          this.items = res.data;
+        })
+        .catch((e) => {
+          this.errors = e.response.data.errors;
+        });
     },
 
-    mounted() {
-        this.fetchData(this.$route.query.page);
+    destroy(item) {
+      if (confirm("Are You Sure?")) {
+        axios.delete(`url/${item.shorten_url}`).then((res) => {
+          this.items.data = this.items.data.filter((i) => i.id != item.id);
+          this.$notify({
+            message: "Deleted Url successfully!",
+            type: "warning",
+          });
+        });
+      }
     },
-    methods: {
 
-        fetchData(page = 1) {
-
-            axios
-                .get(`/url?page=${page}`)
-                .then((res) => {
-                    this.items = res.data;
-                })
-                .catch((e) => {
-                    this.errors = e.response.data.errors;
-                });
-        },
-
-        destroy(item) {
-            if (confirm("Are You Sure?")) {
-                axios.delete(`url/${item.shorten_url}`).then((res) => {
-                    this.items = this.items.filter((i) => i.id != item.id);
-                    this.$notify({
-                        message: "Deleted Url successfully!",
-                        type: "warning",
-                    });
-                });
-            }
-        },
-
-        showDetails(item) {
-            this.selectedItem = item;
-        },
-        openModal() {
-            this.modalOpen = true;
-        }
+    showDetails(item) {
+      this.selectedItem = item;
     },
+    openModal() {
+      this.modalOpen = true;
+    },
+  },
 };
 </script>
 
